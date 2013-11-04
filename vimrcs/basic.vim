@@ -67,8 +67,8 @@ command W w !sudo tee % > /dev/null
 
 " Highlight lines over 80 chars
 if exists('+colorcolumn')
-    highlight ColorColumn guibg=#000000 ctermbg=0
-    let &colorcolumn="80,140"
+  highlight ColorColumn guibg=#000000 ctermbg=0
+  let &colorcolumn="80,140"
 endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -295,6 +295,18 @@ func! DeleteTrailingWS()
 endfunc
 autocmd BufWrite *.py :call DeleteTrailingWS()
 autocmd BufWrite *.coffee :call DeleteTrailingWS()
+
+autocmd BufWritePre *.js :call DeleteTrailingWS()
+autocmd BufWritePre *.yaml :call DeleteTrailingWS()
+autocmd BufWritePre *.md :call DeleteTrailingWS()
+
+" Highlight extra whitespaces...
+highlight ExtraWhitespace ctermbg=red guibg=red
+match ExtraWhitespace /\s\+$/
+autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
+autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
+autocmd InsertLeave * match ExtraWhitespace /\s\+$/
+autocmd BufWinLeave * call clearmatches()
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
